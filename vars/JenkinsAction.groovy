@@ -1,4 +1,4 @@
-def call(String actionImage) {
+def call(Map option) {
 	def rand1 = Integer.toString(new Random().nextInt(65535) + 1)
 	def rand2 = Integer.toString(new Random().nextInt(65535) + 1)
 	def dindNetwork = "dind-${rand1}${rand2}"
@@ -10,16 +10,16 @@ def call(String actionImage) {
 	dindArgs += "--network ${dindNetwork} "
 
 	// pull actionImage
-	sh "docker pull ${actionImage}"
+	sh "docker pull ${option.actionImage}"
 	def actionName = sh(returnStdout: true,
-		script: "docker inspect ${actionImage} -f '{{ .Config.Labels.ACTION_NAME }}'" ).trim()
+		script: "docker inspect ${option.actionImage} -f '{{ .Config.Labels.ACTION_NAME }}'" ).trim()
 	def actionEntrypoint = sh(returnStdout: true,
-		script: "docker inspect ${actionImage} -f '{{ .Config.Labels.ACTION_ENTRYPOINT }}'" ).trim()
+		script: "docker inspect ${option.actionImage} -f '{{ .Config.Labels.ACTION_ENTRYPOINT }}'" ).trim()
 	def actionArgs = sh(returnStdout: true,
-		script: "docker inspect ${actionImage} -f '{{ .Config.Labels.ACTION_ARGS }}'" ).trim()
+		script: "docker inspect ${option.actionImage} -f '{{ .Config.Labels.ACTION_ARGS }}'" ).trim()
 
 	// execute action
-	stage("${actionName}") {
+	stage("${option.name}") {
 		WithDockerNetwork(dindNetwork) {
 			docker.image(dindImg).withRun(dindArgs) { c ->
 				def actionRunArgs = ""
@@ -31,7 +31,7 @@ def call(String actionImage) {
 				actionArgs.split(",").each { t->
 					entrypointArgs += "\"${env[t]}\" "
 				}
-				withDockerContainer(image: actionImage, args: actionRunArgs) {
+				withDockerContainer(image: option.actionImage, args: actionRunArgs) {
 					sh "${actionEntrypoint} ${entrypointArgs}"
 				}
 			}
