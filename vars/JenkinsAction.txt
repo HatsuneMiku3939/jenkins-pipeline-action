@@ -5,5 +5,5 @@ Example:
 ```
 //Jenkinsfile
 node {
-	JenkinsAction name: "jenkinsAction", action:"DockerImage:Tag"
+	JenkinsAction(name: "jenkinsAction", action:"DockerImage:Tag")
 }
