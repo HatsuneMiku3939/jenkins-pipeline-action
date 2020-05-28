@@ -10,13 +10,13 @@ def call(def options) {
 	dindArgs += "--network ${dindNetwork} "
 
 	// pull actionImage
-	sh "docker pull ${options.actionImage}"
+	sh "docker pull ${options.action}"
 	def actionName = sh(returnStdout: true,
-		script: "docker inspect ${options.actionImage} -f '{{ .Config.Labels.ACTION_NAME }}'" ).trim()
+		script: "docker inspect ${options.action} -f '{{ .Config.Labels.ACTION_NAME }}'" ).trim()
 	def actionEntrypoint = sh(returnStdout: true,
-		script: "docker inspect ${options.actionImage} -f '{{ .Config.Labels.ACTION_ENTRYPOINT }}'" ).trim()
+		script: "docker inspect ${options.action} -f '{{ .Config.Labels.ACTION_ENTRYPOINT }}'" ).trim()
 	def actionArgs = sh(returnStdout: true,
-		script: "docker inspect ${options.actionImage} -f '{{ .Config.Labels.ACTION_ARGS }}'" ).trim()
+		script: "docker inspect ${options.action} -f '{{ .Config.Labels.ACTION_ARGS }}'" ).trim()
 
 	// execute action
 	stage("${options.name}") {
@@ -31,7 +31,7 @@ def call(def options) {
 				actionArgs.split(",").each { t->
 					entrypointArgs += "\"${env[t]}\" "
 				}
-				withDockerContainer(image: options.actionImage, args: actionRunArgs) {
+				withDockerContainer(image: options.action, args: actionRunArgs) {
 					sh "${actionEntrypoint} ${entrypointArgs}"
 				}
 			}
