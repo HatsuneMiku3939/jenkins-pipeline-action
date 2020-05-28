@@ -1,0 +1,9 @@
+*JenkinsAction* is helper for run Dockerized Github Actions on Jenkins.
+Actions parameters comes from Job's parameters.
+
+Example:
+```
+//Jenkinsfile
+node {
+	JenkinsAction("DockerImage:Tag")
+}
