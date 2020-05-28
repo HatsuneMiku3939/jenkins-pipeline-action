@@ -29,7 +29,7 @@ def call(String actionImage) {
 
 				def entrypointArgs = ""
 				actionArgs.split(",").each { t->
-					entrypointArgs += "${env[t]} "
+					entrypointArgs += "\"${env[t]}\" "
 				}
 				withDockerContainer(image: actionImage, args: actionRunArgs) {
 					sh "${actionEntrypoint} ${entrypointArgs}"
