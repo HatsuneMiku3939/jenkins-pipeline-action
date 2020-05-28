@@ -1,4 +1,4 @@
-def call(Map options) {
+def call(def options) {
 	def rand1 = Integer.toString(new Random().nextInt(65535) + 1)
 	def rand2 = Integer.toString(new Random().nextInt(65535) + 1)
 	def dindNetwork = "dind-${rand1}${rand2}"
