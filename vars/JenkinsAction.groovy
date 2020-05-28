@@ -26,7 +26,7 @@ def call(def options) {
 				actionRunArgs += "--entrypoint='' "
 
 				def entrypointArgs = ""
-				actionArgs.split(",").each { argName -> {
+				actionArgs.split(",").each { argName ->
 					entrypointArgs += "\"${options.args[argName]}\""
 				}
 				withDockerContainer(image: options.action, args: actionRunArgs) {
