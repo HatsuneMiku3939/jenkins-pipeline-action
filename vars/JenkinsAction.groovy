@@ -1,4 +1,4 @@
-def call(String stepImage) {
+def call(String actionImage) {
 	def rand1 = Integer.toString(new Random().nextInt(65535) + 1)
 	def rand2 = Integer.toString(new Random().nextInt(65535) + 1)
 	def dindNetwork = "dind-${rand1}${rand2}"
