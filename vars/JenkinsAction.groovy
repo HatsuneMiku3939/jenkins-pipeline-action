@@ -12,11 +12,11 @@ def call(String actionImage) {
 	// pull actionImage
 	sh "docker pull ${actionImage}"
 	def actionName = sh(returnStdout: true,
-		script: "docker inspect ${actionImage} -f '{{ .Config.Labels.STEP_NAME }}'" ).trim()
+		script: "docker inspect ${actionImage} -f '{{ .Config.Labels.ACTION_NAME }}'" ).trim()
 	def actionEntrypoint = sh(returnStdout: true,
-		script: "docker inspect ${actionImage} -f '{{ .Config.Labels.STEP_ENTRYPOINT }}'" ).trim()
+		script: "docker inspect ${actionImage} -f '{{ .Config.Labels.ACTION_ENTRYPOINT }}'" ).trim()
 	def actionArgs = sh(returnStdout: true,
-		script: "docker inspect ${actionImage} -f '{{ .Config.Labels.STEP_ARGS }}'" ).trim()
+		script: "docker inspect ${actionImage} -f '{{ .Config.Labels.ACTION_ARGS }}'" ).trim()
 
 	// execute action
 	stage("${actionName}") {
