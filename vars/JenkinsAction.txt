@@ -8,5 +8,8 @@ node {
 	JenkinsAction(
 		name: "jenkinsAction",
 		action:"DockerImage:Tag"
+		args: [
+			"args1": params.args1
+		]
 	)
 }

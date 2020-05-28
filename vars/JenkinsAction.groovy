@@ -11,8 +11,6 @@ def call(def options) {
 
 	// pull actionImage
 	sh "docker pull ${options.action}"
-	def actionName = sh(returnStdout: true,
-		script: "docker inspect ${options.action} -f '{{ .Config.Labels.ACTION_NAME }}'" ).trim()
 	def actionEntrypoint = sh(returnStdout: true,
 		script: "docker inspect ${options.action} -f '{{ .Config.Labels.ACTION_ENTRYPOINT }}'" ).trim()
 	def actionArgs = sh(returnStdout: true,
@@ -28,8 +26,8 @@ def call(def options) {
 				actionRunArgs += "--entrypoint='' "
 
 				def entrypointArgs = ""
-				actionArgs.split(",").each { t->
-					entrypointArgs += "\"${env[t]}\" "
+				actionArgs.split(",").each { argName -> {
+					entrypointArgs += "\"${options.args[argName]}\""
 				}
 				withDockerContainer(image: options.action, args: actionRunArgs) {
 					sh "${actionEntrypoint} ${entrypointArgs}"
