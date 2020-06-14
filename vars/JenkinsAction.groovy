@@ -1,7 +1,6 @@
 def call(def options) {
-	def rand1 = Integer.toString(new Random().nextInt(65535) + 1)
-	def rand2 = Integer.toString(new Random().nextInt(65535) + 1)
-	def dindNetwork = "dind-${rand1}${rand2}"
+	def rand1 = env['BUILD_TAG'].digest('SHA-1').substring(0, 12)
+	def dindNetwork = "dind-${rand1}"
 
 	def dindImg = 'docker:18.09.9-dind'
 	def dockerImg = "docker:18.09.9"
